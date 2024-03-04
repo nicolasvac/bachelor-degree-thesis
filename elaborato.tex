@@ -1,0 +1,148 @@
+\documentclass[a4paper, titlepage, 12pt, openright, twoside]{book}
+
+\usepackage[T1]{fontenc}
+\usepackage[italian]{babel}
+\usepackage{frontespizio}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{stmaryrd}
+\usepackage{cite}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+
+\begin{document}
+
+\begin{frontespizio}
+\Universita{Verona}
+\Dipartimento{Informatica}
+\Corso[Laurea]{Informatica}
+\Titoletto{Tesi di laurea}
+\Titolo{Architetture per la gestione di ordini in locali di ristorazione}
+\NCandidato{Studente}
+\Candidato[436988]{VACCARI NICOLAS}
+\Annoaccademico{2022-2023}
+\end{frontespizio}
+
+\tableofcontents
+
+\chapter{Introduzione}\label{chap:introduzione}
+
+\section{Prefazione}
+
+Questo documento si pone come obbiettivo di analizzare i seguenti aspetti del mondo della ristorazione aziendale collettiva:
+\begin{itemize}
+	\item quali sono le esigenze degli enti che mettono a disposizione il servizio di ristorazione
+	\item quali sono le esigenze dei gestori che operano e mantengono attivo il servizio
+	\item quali problemi sussistono nella realizzazione di tali esigenze e nella loro operatività
+	\item quali soluzioni digitali è possibile adottare al fine di risolvere i suddetti problemi, tenendo in considerazione
+		  gli aspetti di usabilità sia verso gli operatori del servizio, sia verso gli utenti consumatori finali
+\end{itemize}
+
+Il documento non ha come obbiettivo quello di illustrare le procedure burocratiche, economiche e di approvvigionamento materie prime che riguardano il mondo della ristorazione.
+
+\section{Panoramica sul mercato della ristorazione}
+
+A dicembre 2022 negli archivi delle Camere di Commercio italiane risultavano attive 335.817 
+imprese appartenenti al codice di attività 56.0 con il quale vengono classificati i servizi di ristorazione,
+un numero che non stupisce sia per un fattore culturale, sia perché i pubblici esercizi di questo tipo sono
+una realtà ampiamente diffusa in ogni regione e che non ha eguali con nessun'altra tipologia di servizio rivolta alle persone presente in Italia.
+\newline
+Nonostante negli ultimi 4 anni il settore abbia subito delle forti perdite dovute principalmente alla pandemia COVID-19,
+all'inflazione e alla diffusione dell'ideologia "Stay at home" con annesso food delivery, 
+il 2022 ha dimostrato che il mercato è in fase di stabilizzazione e ripresa, con valore stimato di circa 82 miliardi,
+avvicinandosi così al valore del 2019 pari a 85.5 miliardi.
+\newline
+Questo settore, prevalentemente composto da manodopera umana e colmo di legislazioni da rispettare,
+ha da sempre lasciato poco spazio all'introduzione della tecnologia, sia per una questione pratica di sostituzione del lavoratore,
+sia per una questione di convenienza economica.
+\newline
+Fortunatamente per il settore IT, grazie al cambiamento dello stile di vita della persona media influenzato dai fattori citati prima,
+ora i ristoratori (specialmente i ristoratori collettivi) sono sempre più alla ricerca di nuove soluzioni per attrarre nuovi clienti
+e generare più vendite utilizzando gli stessi locali, aprendo così nuove possibilità di sviluppo e di conseguenza nuove sfide tecnologiche da risolvere.
+
+\section{Tipologie di ristorazione}
+
+Il mondo della ristorazione si divide principalmente in due categorie:
+\begin{itemize}
+	\item \textbf{Ristorazione commerciale}: si rivolge direttamente al consumatore finale, con una clientela di tipo occasionale
+											 (in quanto sono i clienti che decidono di recarsi in quella specifica ubicazione) e nella maggior parte dei casi
+											 propone alimenti che sono preparati e consumati nello stesso luogo. In confronto con la ristorazione collettiva,
+											 il costo medio dei pasti è maggiore, ed il numero di individui che è possibile ospitare contemporaneamente è solitamente inferiore.
+											 In questa categoria rientrano:
+											 \begin{itemize}
+											 	\item \textbf{Ristorazione tradizionale}: la più comune e conosciuta, include trattorie, pizzerie, bistrot, ...
+											 	\item \textbf{Ristorazione agrituristica}: locali interni ad aziende agricole che servono pietanze con le loro materie prime
+											 	\item \textbf{Ristorazione alberghiera}: svolta all'interno di strutture alberghiere per completare l'offerta dei propri servizi
+											 	\item \textbf{Ristorazione veloce}: quella in più rapida espansione, include tutte le attività 
+											 										come fastfood, snackbar, tavole calde, ...
+											 \end{itemize}
+	\item \textbf{Ristorazione collettiva}: si occupa della preparazione e consegna di pasti su larga scala, con alimenti preparati in grandi cucine industriali dedicate e
+											successivamente distribuiti a cucine più piccole collocate all'interno dei refettori che hanno il compito di "ripristinare" la pietanza
+											e consegnarla al consumatore finale. I clienti di questo servizio sono tipicamente i fruitori dell'ambiente in cui si trova il locale
+											(es: i dipendenti di una azienda), diventando quindi clienti abituali e la loro scelta deriva principalmente 
+											da una necessità di dover consumare almeno un pasto durante il loro periodo di permanenza nell'ubicazione. 
+											I costi sono contenuti, e molto spesso una parte del costo è carico dell'ente che mette a disposizione
+											il servizio, ritagliandolo come un piccolo benefit. Il modus operandi di queste imprese è quello di proporre un menù fisso,
+											accompagnato da uno o più operatori che gestiscono una linea self-service dove i clienti si accodano per acquistare la pietanza.
+											In questa categoria rientrano:
+											\begin{itemize}
+												\item \textbf{Ristorazione aziendale}: la si trova all'interno di imprese di medie o grandi dimensioni, ed è dedicata alla preparazione
+																						del pranzo o cena per i dipendenti
+												\item \textbf{Ristorazione scolastica}: dedicata alla preparazione di pasti per gli studenti o dipendenti di scuole e università
+												\item \textbf{Ristorazione socio-sanitaria}: dedicata alla preparazione di pasti all'interno di ospedali, cliniche e case di riposo
+												\item \textbf{Ristorazione assistenziale}: dedicata alla preparazione di pasti da distribuire al domicilio di persone 
+																							non autosufficienti
+												\item \textbf{Ristorazione comunitaria}: presente all'interno di caserme, istituti religiosi e carceri penitenziari
+											\end{itemize}
+\end{itemize}
+
+\section{Il peso della ristorazione collettiva}
+
+La ristorazione collettiva nasce con l'obbiettivo di colmare l'esigenza di tutti quegli individui
+che hanno la necessità di consumare almeno un pasto fuori casa, solitamente per un fattore di tempo a disposizione.
+Ad oggi possiamo considerare la ristorazione collettiva non più come "un plus" disponibile a pochi, ma una necessità di una società in continua evoluzione.
+Fornendo un esempio nel settore IT, possiamo notare come le 5 aziende FAANG offrano un servizio di ristorazione di alta qualità aperto 14 ore al giorno ai propri lavoratori,
+e di come questo servizio venga valorizzato da loro stessi come un punto di forza fondamentale per l'azienda stessa.
+\newline
+Uscendo dal mondo delle migliori aziende IT, troviamo comunque sempre più casi dove gli enti puntano ad offrire come benefit un servizio mensa di media-alta qualità,
+sia ai propri dipendenti che ai propri ospiti.
+\newline
+Ma quanto può incidere un servizio di ristorazione?
+\newline
+Un caso che può far riflettere è la realtà di Google, dove per convincere i propri dipendenti a tornare in ufficio e abbandonare il lavoro da casa,
+offre a chiunque accetti un servizio di creazione di una dieta bilanciata da parte di un team nutrizionale specializzato, e tutti i pasti a qualsiasi ora del giorno a carico dell'azienda.
+Al di fuori di questo elemento, possiamo prendere in considerazione un articolo della Cornell University, che ci fa notare i seguenti punti:
+\begin{itemize}
+	\item I gruppi di individui che mangiano assieme, tendono a sviluppare rapporti umani migliori, che spesso si traduce in una produttività maggiore in gruppi di grandi dimensioni
+	\item I singoli individui tendono a sentirsi più importanti e valorizzati quando il proprio ente mette a disposizione un servizio di qualità, aumentandone il morale e la motivazione
+	\item Nel contesto aziendale, un dipendente può rivalutare la scelta di cambiare lavoro quando l'azienda offre un pasto garantito e di qualità,
+			riducendo quindi le probabilità di turnover per l'azienda
+\end{itemize}
+
+\chapter{Caso d'uso: Refettorio aziendale collettivo}\label{chap:caso}
+
+\section{Requisiti e obbiettivi desiderati}
+
+\section{Problematiche ed elementi da gestire}
+
+\section{Una prima implementazione}
+
+\section{Fase critica: gestire l'ordine dei messaggi}
+
+\section{Conclusioni}
+
+\chapter{Terminologie}\label{chap:terminologie}
+
+\begin{itemize}
+	\item \textbf{FAANG}: Facebook, Apple, Amazon, Netflix, Google
+\end{itemize}
+
+\chapter{Fonti e bibliografia}\label{chap:fonti}
+
+\bibliography{bibliography}
+
+\chapter{Dedica}\label{chap:dedica}
+
+
+\end{document}
