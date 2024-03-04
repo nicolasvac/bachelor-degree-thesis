@@ -1,0 +1,40 @@
+<mxfile host="Electron" modified="2024-03-04T10:00:48.745Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/23.1.5 Chrome/120.0.6099.109 Electron/28.1.0 Safari/537.36" etag="rBFj1sE6a9umMFdnTcHr" version="23.1.5" type="device">
+  <diagram name="Pagina-1" id="WI-r-n1mZ0VFuzGhTiAI">
+    <mxGraphModel dx="1688" dy="683" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="-c5Fi58AOrAe6KTaNTVH-1" value="Utente con prenotazione" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="120" y="200" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-c5Fi58AOrAe6KTaNTVH-2" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="180" y="230" as="sourcePoint" />
+            <mxPoint x="240" y="230" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-c5Fi58AOrAe6KTaNTVH-3" value="Identificazione al rilevatore di presenza" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="250" y="205" width="90" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="-c5Fi58AOrAe6KTaNTVH-4" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="350" y="229.71" as="sourcePoint" />
+            <mxPoint x="410" y="229.71" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-c5Fi58AOrAe6KTaNTVH-5" value="Stampa dello scontrino con codice di ordine" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="420" y="205" width="90" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="-c5Fi58AOrAe6KTaNTVH-6" value="L&#39;utente può ora inserirsi in coda con il proprio vassoio" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="590" y="197.5" width="90" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="-c5Fi58AOrAe6KTaNTVH-7" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="520" y="229.71" as="sourcePoint" />
+            <mxPoint x="580" y="229.71" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

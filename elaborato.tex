@@ -10,6 +10,9 @@
 \usepackage{cite}
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
+\usepackage{algpseudocode}
+
+\graphicspath{ {./img/} }
 
 \begin{document}
 
@@ -30,16 +33,15 @@
 
 \section{Prefazione}
 
-Questo documento si pone come obbiettivo di analizzare i seguenti aspetti del mondo della ristorazione aziendale collettiva:
+Questo documento ha come obbiettivi:
 \begin{itemize}
-	\item quali sono le esigenze degli enti che mettono a disposizione il servizio di ristorazione
-	\item quali sono le esigenze dei gestori che operano e mantengono attivo il servizio
-	\item quali problemi sussistono nella realizzazione di tali esigenze e nella loro operatività
-	\item quali soluzioni digitali è possibile adottare al fine di risolvere i suddetti problemi, tenendo in considerazione
-		  gli aspetti di usabilità sia verso gli operatori del servizio, sia verso gli utenti consumatori finali
+	\item dare al lettore una panoramica dello stato della ristorazione al momento della scrittura
+	\item quali possono essere le esigenze degli enti e gestori che mettono a disposizione e operano un servizio di ristorazione aziendale collettivo attraverso un caso d'uso
+	\item quali soluzioni digitali è possibile adottare al fine di soddisfare i requisiti, quali problemi sussistono nella realizzazione di tali servizi, con un occhio di riguardo per
+		  gli aspetti di usabilità sia verso gli operatori del servizio, sia verso i consumatori finali
 \end{itemize}
 
-Il documento non ha come obbiettivo quello di illustrare le procedure burocratiche, economiche e di approvvigionamento materie prime che riguardano il mondo della ristorazione.
+Il documento non ha come obbiettivo quello di illustrare le procedure burocratiche, economiche e operative che riguardano il mondo della ristorazione o le aziende coinvolte.
 
 \section{Panoramica sul mercato della ristorazione}
 
@@ -51,7 +53,7 @@ una realtà ampiamente diffusa in ogni regione e che non ha eguali con nessun'al
 Nonostante negli ultimi 4 anni il settore abbia subito delle forti perdite dovute principalmente alla pandemia COVID-19,
 all'inflazione e alla diffusione dell'ideologia "Stay at home" con annesso food delivery, 
 il 2022 ha dimostrato che il mercato è in fase di stabilizzazione e ripresa, con valore stimato di circa 82 miliardi,
-avvicinandosi così al valore del 2019 pari a 85.5 miliardi.
+avvicinandosi così al valore del 2019 pari a 85.5 miliardi. \cite{rristorazione}
 \newline
 Questo settore, prevalentemente composto da manodopera umana e colmo di legislazioni da rispettare,
 ha da sempre lasciato poco spazio all'introduzione della tecnologia, sia per una questione pratica di sostituzione del lavoratore,
@@ -112,7 +114,7 @@ Ma quanto può incidere un servizio di ristorazione?
 \newline
 Un caso che può far riflettere è la realtà di Google, dove per convincere i propri dipendenti a tornare in ufficio e abbandonare il lavoro da casa,
 offre a chiunque accetti un servizio di creazione di una dieta bilanciata da parte di un team nutrizionale specializzato, e tutti i pasti a qualsiasi ora del giorno a carico dell'azienda.
-Al di fuori di questo elemento, possiamo prendere in considerazione un articolo della Cornell University, che ci fa notare i seguenti punti:
+Al di fuori di questo elemento, possiamo prendere in considerazione un articolo della Cornell University \cite{cornell}, che ci fa notare i seguenti punti:
 \begin{itemize}
 	\item I gruppi di individui che mangiano assieme, tendono a sviluppare rapporti umani migliori, che spesso si traduce in una produttività maggiore in gruppi di grandi dimensioni
 	\item I singoli individui tendono a sentirsi più importanti e valorizzati quando il proprio ente mette a disposizione un servizio di qualità, aumentandone il morale e la motivazione
@@ -122,13 +124,232 @@ Al di fuori di questo elemento, possiamo prendere in considerazione un articolo 
 
 \chapter{Caso d'uso: Refettorio aziendale collettivo}\label{chap:caso}
 
-\section{Requisiti e obbiettivi desiderati}
+\section{Requisiti di ente e gestore}
 
-\section{Problematiche ed elementi da gestire}
+Requisiti dell'azienda ente:
+\begin{itemize}
+	\item Possibilità di prenotare in anticipo il proprio pasto
+	\item Possibilità di ordinare in loco il proprio pasto
+	\item Garantire che gli ordini effettuati vengano serviti sulla base dell'ordine di ingresso in coda al refettorio da parte del singolo utente
+\end{itemize}
 
-\section{Una prima implementazione}
+Requisti dell'azienda gestore:
+\begin{itemize}
+	\item Tenere traccia di tutti gli individui che mangiano in mensa, al fine di effettuare la rendicontazione
+	\item Menù fisso con costo prestabilito e una combinazione fissa composta da un primo piatto, un secondo piatto e un contorno
+	\item Regolamentare gli orari entro il quale è possibile prenotare il pasto
+	\item Regolamentare gli orari in cui il servizio è attivo ed è possibile accedere alla mensa
+	\item Due addetti alla linea self, uno per la gestione dei primi piatti e uno per la gestione dei secondi piatti e dei contorni
+\end{itemize}
 
-\section{Fase critica: gestire l'ordine dei messaggi}
+\section{Analisi dei requisiti}
+
+Analizzando i requisiti di entrambe le parti possiamo stilare i seguenti punti:
+\begin{itemize}
+	\item E' necessario introdurre un sistema centrale di backoffice per il salvataggio dei menù, il salvataggio degli ordini in loco e delle prenotazioni,
+		  l'elaborazione dei pagamenti, invio di email di conferma per le prenotazioni, regolazione degli orari di servizio, l'anagrafica degli utenti finali, l'anagrafica degli 	 
+		  utenti operatori e l'anagrafica dei dispositivi hardware in uso all'interno del refettorio
+	\item E' necessario realizzare un metodo di prenotazione digitale per l'utente accessibile all'esterno del refettorio; idealmente, una pagina web o una applicazione mobile
+	\item E' necessario inserire un dispositivo hardware che consenta di effettuare ordini in loco
+	\item E' necessario inserire un dispositivo hardware che consenta di identificare gli utenti che entrano in mensa con già una prenotazione effettuata
+	\item E' necessario inserire due dispositivi hardware che consentano agli operatori della linea self di controllare l'avanzamento della coda virtuale degli utenti,
+		  e di indicare quali utenti sono stati serviti al fine di registrare l'erogazione del pasto all'interno del sistema centrale
+\end{itemize}
+
+\section{Analisi delle funzionalità}
+
+All'interno di questo caso d'uso verranno tralasciate dall'analisi tutte le operazioni di "backoffice", quali:
+\begin{itemize}
+	\item Costruzione di ricette, menù e combinazioni
+	\item Gestione dei pagamenti, rendicontazioni, rimborsi
+	\item Anagrafiche utenti, operatori e dispositivi
+\end{itemize}
+
+\subsection{Gestione di una coda digitale}
+L'obbiettivo è quello di rendere i dispositivi fisici degli operatori "stupidi", e di delegare la logica che decreta l'avanzamento dei consumatori all'interno della coda al sistema centrale, resiliente nel cloud (andando incontro anche alle normative emanate da AGID per favorire l'utilizzo di piattaforme in cloud) e non in un locale fisico dell'ubicazione.
+Questo modello presenta i seguenti pro e contro:
+\begin{itemize}
+	\item \textbf{(+)} Consente di poter aggiustare al volo la posizione degli utenti, o di rimuovere degli utenti dal servizio in caso di anomalie con il loro ordine
+	\item \textbf{(+)} Semplifica lo sviluppo, in quanto non è necessario implementare logiche di controllo per ogni tipologia di dispositivo fisico
+	\item \textbf{(+)} Semplifica l'infrastruttura sistemistica per l'ubicazione, in quanto non essendo necessario un locale tecnico dedicato per la gestione di server del sistema
+					   centrale, si riducono le superfici d'attacco, si riducono i costi di startup e i costi di installazione dell'hardware e di mantenimento
+	\item \textbf{(+)} Si riducono i costi per i dispositivi fisici, in quanto non sono necessari dispositivi molto potenti o con funzionalità di calcolo/comunicazione avanzate
+	\item \textbf{(-)} Sono necessarie risorse maggiori per il sistema centrale (anche se il costo di esse può essere ammortizzato inserendole nel canone economico del servizio)
+\end{itemize}
+
+\subsection{Utente che effettua una prenotazione}
+\begin{enumerate}
+	\item Il consumatore effettua la prenotazione tramite uno dei mezzi messi a disposizione, come app o pagina web
+	\item Il sistema verifica che la prenotazione rispetti tutti i parametri, e se la verifica va a buon fine, registra la prenotazione
+		  e invia una email di conferma all'utente che ha effettuato la prenotazione
+	\item Arrivato il giorno per cui ha effettuato la prenotazione, l'utente si reca nel refettorio, si identifica all'apposito tornello di ingresso,
+		  e riceve un codice numerico univoco che identifica il suo ordine e ne indica il suo posto nella coda. A questo punto l'utente può inserirsi in coda
+	\item Una volta giunto alla sezione dei primi piatti, l'operatore procede a consegnare il pasto, segnando sul suo dispositivo che l'utente è stato servito.
+		  Questo consente all'utente di avanzare alla sezione successiva, ovvero quella dei secondi piatti, dove a sua volta l'operatore dei secondi piatti si occuperà di servirlo.
+	\item Quando l'utente raggiunge l'ultima sezione, l'operatore che serve l'utente ha il compito di completare il flusso del consumatore, segnandolo come servizio erogato,
+		  e il consumatore sarà libero di abbandonare la coda per completare il pasto
+\end{enumerate}
+
+\subsection{Utente che ordina in loco}
+\begin{enumerate}
+	\item Il consumatore si reca fisicamente all'ubicazione per effettuare una consumazione
+	\item Attraverso il totem delle ordinazioni, il cliente effettua l'ordine e una volta verificato dal sistema centrale riceve il codice numerico che indica il suo posto nella coda
+	\item Arrivato il giorno per cui ha effettuato la prenotazione, l'utente si reca nel refettorio, si identifica all'apposito tornello di ingresso,
+		  e riceve un codice numerico univoco che identifica il suo ordine e ne indica il suo posto nella coda. A questo punto l'utente può inserirsi in coda
+	\item I punti 4 e 5 sono analoghi alla sezione precedente
+\end{enumerate}
+
+\subsection{Gestione del flusso dell'operatore}
+Gli operatori hanno il compito di coordinare l'avanzamento della coda nelle varie postazioni del servizio.
+Nel nostro caso, utilizzeremo una coda unica per i commensali, avendo tutti l'obbligo di consumare sia primi che secondi piatti.
+Quando l'utente entra nella coda, viene automaticamente segnata come destinazione la postazione dei primi piatti.
+Una volta che l'utente ha ricevuto il primo piatto dall'operatore, l'operatore conferma sul display del dispositivo che l'utente è stato servito,
+e al consumatore viene impostata come destinazione la postazione dei secondi piatti, che raggiungerà anche fisicamente.
+Giunto alla postazione dei secondi piatti, l'operatore serve l'utente e sul display del suo dispositivo segna l'utente come servito. Essendo quella dei secondi piatti l'ultima
+postazione della coda, l'utente viene rimosso dalla coda dal sistema centrale in quanto il suo flusso è stato completato. Il ruolo dell'operatore è quindi fondamentale per far corrispondere l'avanzamento nella realtà a quello nella coda virtuale all'interno del sistema.
+
+\section{Analisi tecnica}
+
+\subsection{Architettura}
+
+\begin{figure}[t]
+\caption{Architettura generale per l'implementazione}
+\includegraphics[scale=0.40]{architettura}
+\centering
+\end{figure}
+
+L'architettura si compone di 4 tipologie di elementi:
+\begin{itemize}
+	\item \textbf{Strumenti per la creazione di ordini}: nel nostro caso tramite totem e app mobile. Sia l'app che il totem possono essere realizzati con Flutter, un innovativo
+				 framework per lo sviluppo di app cross-piattaforma che funziona per iOS, Android, Linux, Windows e Web. La scelta di questo framework rappresenta un grande
+				 vantaggio competitivo, in quanto:
+				 \begin{itemize}
+				 	\item Garantisce correttezza e "feature-parity" tra le varie piattaforme, in quanto provenienti tutte da un unico codice sorgente
+				 	\item Consente di iniziare con un team di sviluppo limitato, in quanto è necessario selezionare solamente figure con skills omogenee
+				 	\item Al momento è il framework più popolare del mercato, avendo superato React Native, rappresentando quindi una scelta solida su cui investire anche a livello
+				 		  di management aziendale \cite{flutterreact}
+				    \item Avendo la possibilità di essere compilata anche per iOS e Android, consente di raggiungere un bacino di utenti molto più ampio rispetto ad una pagina web
+				    	  navigabile da pc fisso o portatile \cite{hardwaremob}
+				 \end{itemize}
+				 
+	\item \textbf{Risorse per la computazione dei dati}: nel nostro caso specifico abbiamo necessità di avere uno o più copie dell'applicativo che gestisce tutte le operazioni
+				 di logica delle code e di archiviazione dei dati. In particolare, possiamo strutturare le risorse in due componenti:
+				 \begin{itemize}
+				 	\item \textbf{Un database SQL}: In particolar modo PostgreSQL, facilmente scalabile, ACID-compliant ed open source. La scelta di un database SQL rispetto ad
+				 				 un database NoSQL è stata influenzata in particolar modo dall'incapacità dei database NoSQL di creare vincoli UNIQUE, cosa che a noi interessa
+				 				 al fine di evitare inserimenti doppi di individui in coda e ridurre i problemi di concorrenza
+				 	\item \textbf{Un applicativo}: Lo stack di questo applicativo varia dalle necessità dell'azienda, ma soprattutto dalle skills tecnologiche già presenti
+				 				 all'interno dell'azienda. Un linguaggio che sicuramente può soddisfare le necessità del nostro applicativo è GoLang:
+				 				 \begin{itemize}
+				 				 	\item Ogni applicativo in go è facilmente containerizzabile e deployabile su qualsiasi infrastruttura moderna come Kubernetes
+				 				 	\item Il linguaggio è semplice da prendere in mano e presenta poche ambiguità, perfetto sia per grandi aziende che per startup
+				 				 	\item L'ecosistema per la scrittura di applicativi web concorrenti è molto vasto, avendo una user-base che sviluppa principalmente 
+				 				 		  applicativi web o applicativi di rete
+				 				 	\item La concorrenza è un cittadino di prima classe tramite "Goroutines" e "Channels"
+				 				 \end{itemize}
+				 				 L'applicativo dovrà quindi esporre una serie di chiamate HTTP per permettere di effettuare tutte le operazioni necessarie,
+				 				 e dovrà poter comunicare con il connettore di invio messaggi e il database sql. L'applicativo è state-less, ovvero non tiene nulla nella memoria,
+				 				 e processa i dati singolarmente per ogni richiesta. Questa scelta è fatta per permettere l'aggiunta / distruzione di istanze on-the-fly tramite
+				 				 Kubernetes senza doversi preoccupare di sincronizzare le varie istanze tra di loro.
+				 \end{itemize}
+	
+	\item \textbf{Connettore per l'invio di messaggi in tempo reale}: questo componente ha il compito di creare degli specifici canali d'ascolto chiamati "topic",
+				 a cui i client possono connettersi ed ascoltare i messaggi inviati in questo canale e a loro volta scrivere all'interno del canale. Questa funzione è svolta
+				 tramite il protocollo di comunicazione MQTT utilizzando il modello Pub/Sub. Nel nostro caso, MQTT mette a disposizione dei canali al cui interno vengono inviati
+				 dei messaggi JSON codificati in base64. Il nome del canale ha la seguente struttura: \textbf{id-univoco-cliente/devices/id-univoco-device}.
+				 Ogni device fisico si mette in ascolto sul canale che corrisponde al suo id, così da ricevere solamente i messaggi a lui riservati. In caso di messaggi "globali"
+				 per tutti i device collegati ad una particolare coda, è possibile utilizzare il canale con la seguente struttura: \textbf{id-univoco-cliente/queues/id-univoco-coda}.
+				 Il protocollo MQTT ci garantisce l'invio dei messaggi al meglio di uno, non escludendo quindi la possibilità di ricevere messaggi duplicati. Sarà nostro compito
+				 capire come ignorare eventuali messaggi doppi. Con la nostra configurazione, i dispositivi fisici fungono solamente da subscribers, e l'unico publisher è 
+				 il sistema centrale, che invierà messaggi al connettore tramite una chiamata HTTP dedicata che funge da servizio di ingest dei messaggi. 
+				 Si è scelto di fare affidamento ad AWS IoT, un servizio cloud completamente gestito e scalabile fino a 100 milioni
+				 di messaggi al secondo e oltre 10 milioni di dispositivi connessi contemporaneamente.
+				 
+	\item \textbf{Device per la gestione dei flussi}: analogo al caso dei totem, la scelta più conveniente rimane sempre Flutter.
+	
+\end{itemize}
+
+\subsection{Esempio di flusso completo}
+Procediamo ora ad illustrare come viene creato e completato un flusso di coda a partire da un utente che effettua un ordine in loco:
+\begin{enumerate}
+	\item L'utente completa l'acquisto sul totem per gli ordini
+	\item Il totem invia una richiesta HTTP al sistema centrale per verificare la validità dell'ordine
+	\item Supponendo che tutto sia andato a buon fine, il sistema centrale procede attraverso la sezione critica di assegnare un numero univoco all'ordine,
+		  e una volta determinato lo restituisce al totem in risposta alla chiamata HTTP precedente. Infine il totem stampa il codice ricevuto.
+	\item Una volta determinato il codice, il sistema centrale procede a determinare quali dispositivi vanno avvisati dell'arrivo dell'utente, e successivamente
+		  invia una richiesta HTTP al punto di ingest del componente MQTT, fornendo il messaggio e i canali a cui inviarlo.
+	\item Nel nostro caso, siccome ci troviamo alla creazione del flusso, questo messaggio verrà recapitato al dispositivo assegnato alla postazione dei primi piatti.
+	\item Una volta ricevuto, viene inserito nella coda all'interno del dispositivo che avanzerà man mano al comando dell'operatore.
+	\item Alla richiesta di avanzamento del nostro messaggio da parte dell'operatore, il dispositivo invia una chiamata HTTP al sistema centrale, chiedendo l'avanzamento del flusso
+		  al dispositivo successivo o la sua terminazione. Il sistema centrale computa il successivo display, e procede inviando un messaggio al display successivo sempre tramite
+		  il componente MQTT.
+	\item Il ciclo si ripete fino a quando, arrivati all'ultimo dispositivo fisico, il sistema determina che la coda per il flusso è terminata, e procede al suo completamento,
+		  terminando di inviare messaggi inerenti al flusso. 
+\end{enumerate}
+
+\subsection{Analisi criticità: Ridondanza del sistema centrale}
+
+Come citato in precedenza, avendo delegato il compito al sistema centrale di gestire le logiche di ordine e avanzamento, è necessario che il sistema centrale sia sempre operativo
+e raggiungibile da qualsiasi parte del mondo. Per questo motivo, appoggiarsi a un provider cloud con servizi gestiti è sicuramente una scelta farevole. I provider cloud mascherano
+la complessità di gestire una infrastruttura ridondata e si occupano loro di garantire percentuali di uptime annuali molto alte, fino a 99.995\%, ovvero meno di 30 minuti di disservizio l'anno. Non è però sufficiente scegliere una infrastruttura sicura, ma è necessario progettare anche l'applicativo per gestire gli errori imprevisti, gestire la scalabilità durante i picchi, e saper recuperare le informazioni in caso di errori. Uno strumento adatto a questo compito è Kubernetes, un framework nato per semplificare lo scaling di applicazioni in maniera uniforme, sfruttando la tecnologia dei container linux. Possiamo quindi utilizzare:
+\begin{itemize}
+	\item \textbf{AWS EC2} per le risorse computazionali pure
+	\item \textbf{AWS EKS} per la gestione delle risorse tramite Kubernetes
+	\item \textbf{AWS RDS} per un database sql postgres replicato
+	\item \textbf{AWS IOT} come connettore MQTT distribuito
+	\item \textbf{AWS S3} per salvare tutti i backup dei dati ad intervalli regolari (es: ogni 6 ore)
+\end{itemize}
+
+\subsection{Analisi criticità: Determinare l'ordine dei dispositivi nella coda virtuale}
+
+Uno dei primi problemi da risolvere è capire come strutturare una anagrafica per salvare l'ordine dei dispositivi all'interno di una coda prevenendo doppioni.
+Questo problema può essere risolto sfruttando una delle caratteristiche dei database SQL, ovvero il vincolo \textbf{UNIQUE}.
+La nostra tabella dati può essere strutturata nel seguente modo:
+
+\begin{center}
+    \begin{tabular}{ | l | l | p{3cm} | p{3cm} |}
+    \hline
+    Nome colonna & Tipologia & Argomenti & Descrizione \\ \hline
+    id & INT(11) UNSIGNED & NOT NULL PRIMARY KEY & Chiave primaria della riga di associazione. \\ \hline
+    dispositivo\_fisico\_id & INT(11) UNSIGNED & NOT NULL & ID del dispositivo da associare alla coda. \\ \hline
+    coda\_id & INT(11) UNSIGNED & NOT NULL & ID della coda a cui associare il dispositivo. \\ \hline
+    dispositivo\_ordine & INT(2) UNSIGNED & NOT NULL & Ordine virtuale del dispositivo a partire da 1. \\ \hline
+    \end{tabular}
+\end{center}
+
+Questa struttura dati ci consente di associare qualsiasi dispositivo fisico a qualsiasi coda ed in qualsiasi ordine. Noi vogliamo associare un dispositivo solamente una volta ad una coda, e vogliamo assicurarci che per una coda non ci siano mai due dispositivi con lo stesso ordine. Per farlo, possiamo utilizzare due vincoli UNIQUE:
+\begin{itemize}
+	\item \textbf{UNIQUE(dispositivo\_fisico\_id, coda\_id)}: al fine di tenere attivo il principio che un dispositivo fisico può essere collegato solamente ad una coda contemporaneamente
+	\item \textbf{UNIQUE(dispositivo\_ordine, coda\_id)}: al fine di tenere attivo il principio che non possono esistere più dispositivi nella stessa coda con lo stesso ordine
+\end{itemize}
+
+\subsection{Analisi criticità: ottenimento del numero in coda}
+
+Il numero di coda è il modo visivo di comunicare agli utenti che all'interno del refettorio la loro posizione ed il loro turno. Deciderlo in un ambiente corrente non è banale, in quanto vi è la possibilità di creare dei numeri duplicati se non gestiti correttamente. Per aggirare questa criticità, ci affidiamo nuovamente alle funzionalità offerte dal database SQL, in questo caso una transazione atomica combinata ad un lock sulla tabella in scrittura e lettura. Lo pseudo codice dell'applicativo per la gestione di questa fase critica è il seguente:
+
+\begin{algorithmic}[1]
+\State $retries \gets 5$
+\State $nuovoNumero \gets -1$
+\While{$retries \ge 0$}
+\State acquisisci lock sulla tabella con timeout di 100ms
+\If{lock acquisito}
+\State leggi ultimo numero inserito
+\State $nuovoNumero \gets ultimoNumero + 1$
+\State salva a database con una transazione atomica
+\State rilascia il lock
+\State break
+\Else
+\State $retries \gets retries - 1$
+\EndIf
+\EndWhile
+\If{$nuovoNumero$ == -1}
+\State throw errore inserimento fallito
+\EndIf
+\end{algorithmic}
+
+Questo algoritmo garantisce di non avere deadlock, in quanto una risorsa non viene mai tenuta per un tempo illimitato, e allo stesso tempo si assicura che durante la fase critica concessa dal lock il dato che stato leggendo è integro.
+
+\subsection{Analisi criticità: gestire l'invio dei messaggi}
 
 \section{Conclusioni}
 
@@ -136,13 +357,17 @@ Al di fuori di questo elemento, possiamo prendere in considerazione un articolo 
 
 \begin{itemize}
 	\item \textbf{FAANG}: Facebook, Apple, Amazon, Netflix, Google
+	\item \textbf{AGID}: Agenzia per l'Italia Digitale
+	\item \textbf{ACID}: Atomicity, Consistency, Isolation, e Durability
 \end{itemize}
-
-\chapter{Fonti e bibliografia}\label{chap:fonti}
-
-\bibliography{bibliography}
 
 \chapter{Dedica}\label{chap:dedica}
 
+\begin{thebibliography}{9}
+	\bibitem{cornell} Susan Kelley. \textsl{Groups that eat together perform better together}. Cornell University, 2015
+	\bibitem{rristorazione} Fipe. \textsl{Ristorazione - Rapporto annuale 2023}. Confcommercio, 2023
+	\bibitem{hardwaremob} Statista. \textsl{Market share of desktop, mobile, tablet, and console devices in Italy from 2016 to 2022}. Statista, 2023
+	\bibitem{flutterreact} Flatirons. \textsl{Popularity of Flutter vs. React Native in 2024}. Flatirons, 2024
+\end{thebibliography}
 
 \end{document}
