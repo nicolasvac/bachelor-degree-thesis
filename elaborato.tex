@@ -315,14 +315,14 @@ Questa struttura dati ci consente di associare qualsiasi dispositivo fisico a qu
 
 \subsection{Analisi criticità: ottenimento del numero in coda}
 
-Il numero di coda è il modo visivo di comunicare agli utenti che all'interno del refettorio la loro posizione ed il loro turno. Deciderlo in un ambiente corrente non è banale, in quanto vi è la possibilità di creare dei numeri duplicati se non gestiti correttamente. Per aggirare questa criticità, ci affidiamo nuovamente alle funzionalità offerte dal database SQL, in questo caso una transazione atomica combinata ad un lock sulla tabella in scrittura e lettura.
+Il numero in coda è il modo con cui il sistema comunica agli utenti che all'interno del refettorio la propria posizione in coda. Determinarlo in un ambiente corrente non è banale, in quanto vi è la possibilità di creare dei numeri duplicati se non gestiti correttamente. Per aggirare questa criticità, possiamo fare affidamento alle funzionalità offerte dal database SQL, utilizzando una transazione atomica combinata ad un lock sulla tabella in scrittura e lettura.
 
 \begin{algorithm}
-\caption{gestione creazione numero di coda}
+\caption{gestione ottenimento numero di coda}
 \begin{algorithmic}[1]
-\State $retries \gets 5$
+\State $tentativi \gets 5$
 \State $nuovoNumero \gets -1$
-\While{$retries \ge 0$}
+\While{$tentativi \ge 0$}
 \State acquisisci lock sulla tabella con timeout di 100ms
 \If{lock acquisito}
 \State leggi ultimo numero inserito nella tabella
@@ -331,7 +331,7 @@ Il numero di coda è il modo visivo di comunicare agli utenti che all'interno de
 \State rilascia il lock
 \State break
 \Else
-\State $retries \gets retries - 1$
+\State $tentativi \gets tentativi - 1$
 \EndIf
 \EndWhile
 \If{$nuovoNumero$ == -1}
@@ -340,27 +340,27 @@ Il numero di coda è il modo visivo di comunicare agli utenti che all'interno de
 \end{algorithmic}
 \end{algorithm}
 
-Questo algoritmo garantisce di non avere deadlock, in quanto una risorsa non viene mai tenuta per un tempo illimitato, e allo stesso tempo si assicura che durante la fase critica concessa dal lock il dato che stato leggendo è integro.
+Questo algoritmo garantisce di non avere deadlock perchè una risorsa non viene mai tenuta per un tempo indefinito e allo stesso tempo si assicura che durante la fase critica concessa dal lock il dato su cui stiamo lavorando sia sempre integro.
 
-\subsection{Analisi criticità: gestire l'invio dei messaggi di coda}
+\subsection{Analisi criticità: gestire l'invio di messaggi relativi ai cambiamenti nella coda}
 
 L'invio dei messaggi inerenti ai cambiamenti della coda necessità delle seguenti proprietà:
 
 \begin{itemize}
-	\item \textbf{Riproducibilità}: il dispositivo fisico che riceve i messaggi deve poter richiedere nuovamente l'invio del messaggio intatto nel caso di errori
-	\item \textbf{Univocità}: in tutto il sistema centrale, deve esistere un identificatore univoco che descrive ogni messaggio, così che i consumer possano distinguere eventuali messaggi inviati più volte
+	\item \textbf{Riproducibilità}: il dispositivo fisico che riceve i messaggi deve poter richiedere nuovamente l'invio del messaggio in qualsiasi momento
+	\item \textbf{Univocità}: all'interno del sistema centrale, deve esistere un identificatore univoco che descrive ogni messaggio, così che i consumer possano distinguere eventuali messaggi duplicati
 \end{itemize}
 
-Partiamo affrontando il problema dell'univocità. Questo può essere facilmente risolto facendo ancora una volta riferimento alle qualità offerte del database. Ogni riga di flusso attivo salvata a database riceve un ID univoco che identifica singolarmente quella riga in tutta la tabella. Considerato che nella tabella sono presenti tutti i flussi gestiti dal sistema centrale, possiamo affermare che abbiamo un modo univoco per distinguere ogni riga di flusso attivo.
+Iniziamo affrontando il problema dell'univocità. Questo può essere facilmente affrontato facendo ancora una volta riferimento alle qualità offerte del database. Ogni riga di flusso attivo salvata a database riceve un ID univoco che identifica singolarmente quella riga all'interno della tabella dati. Considerato che nella tabella sono presenti tutti i flussi gestiti dal sistema centrale, possiamo affermare che possediamo un modo univoco per distinguere ogni riga di flusso attivo.
 \newline
-Abbiamo ora bisogno di un modo per capire se un flusso è cambiato dall'ultima volta che è stato letto. Confrontare ogni parametro all'interno del flusso non è scalabile, e soprattutto complicato, in quanto potrebbero co-esistere versioni di schema di flussi diversi. Possiamo però introdurre una colonna denominata \textbf{last\_update} in cui salvare l'ultima volta temporale che la riga di flusso è stata modificata con uno unix timestamp misurato in microsecondi.
+Abbiamo ora bisogno di un metodo per capire se un flusso è stato modificato dall'ultima volta che è stato ricevuto. Confrontare ogni parametro all'interno del flusso non è scalabile e risulta complicato, poichè potrebbero co-esistere versioni di schema database di flussi diversi. Possiamo però introdurre una colonna denominata \textbf{last\_update} in cui salvare l'ultima volta che la riga di flusso è stata modificata, valorizzando la colonna con uno unix timestamp misurato in microsecondi.
 \newline
 Possiamo ora combinare l'id univoco e il timestamp formando una chiave d'identificazione composta \textbf{ID\_UNIVOCO.LAST\_UPDATE} con:
 \begin{itemize}
 	\item \textbf{Una parte fissa} che non cambia mai e identifica univocamente il flusso all'interno del sistema
 	\item \textbf{Una parte dinamica} che può cambiare a seconda di quante volte viene modificato il flusso, consentendo di rilevare i cambiamenti
 \end{itemize}
-Passiamo ora a risolvere il problema della riproducibilità. Come spiegato in precedenza, in qualsiasi momento possono verificarsi dei casi per cui il dispositivo perda connessione ad internet, perdendo la ricezione dei messaggi. Una volta che il device riacquista la connessione ad internet, deve poter chiedere al sistema centrale quali flussi deve gestire. E' quindi necessario sviluppare un endpoint dedicato a ritornare i flussi attivi di quel particolare dispositivo all'interno del sistema centrale per poter completare questa operazione. Possiamo soprannominare questa procedura come "operazione di sincronizzazione". \textbf{Il sistema centrale viene sempre considerata la fonte di verità in caso di incongruenze}. Per scrivere e leggere all'interno della coda locale al dispositivo, il software installato al suo interno utilizza anch'esso un lock per gestire la concorrenza tra avanzamento automatico, avanzamento da parte dell'operatore, ricezione di messaggi e sincronizzazione con il sistema centrale.
+Passiamo ora a risolvere il problema della riproducibilità. Come spiegato in precedenza, in qualsiasi momento possono verificarsi dei casi per cui il dispositivo può avere necessità di effettuare una sincronizzazione. E' quindi necessario sviluppare un endpoint dedicato a ritornare i flussi attivi di quel particolare dispositivo all'interno del sistema centrale per poter completare questa operazione. Possiamo soprannominare questa procedura come "operazione di sincronizzazione". \textbf{Il sistema centrale viene sempre considerato come la fonte di verità in caso di incongruenze}. Per scrivere e leggere all'interno della coda locale al dispositivo, il software installato al suo interno utilizza un lock per gestire la concorrenza tra avanzamento automatico, avanzamento da parte dell'operatore, ricezione di messaggi asincroni e sincronizzazione con il sistema centrale.
 
 \begin{algorithm}
 \caption{gestione della sincronizzazione interna al dispositivo}
@@ -387,8 +387,6 @@ Passiamo ora a risolvere il problema della riproducibilità. Come spiegato in pr
 \State rilascia il lock in scrittura
 \end{algorithmic}
 \end{algorithm}
-
-Questa procedura di sincronizzazione garantisce che, in caso di errori imprevisti, il dispositivo fisico ha sempre la possibilità di riprendere da dove aveva perso.
 
 \section{Conclusioni}
 
