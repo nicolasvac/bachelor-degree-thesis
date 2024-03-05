@@ -390,12 +390,28 @@ Passiamo ora a risolvere il problema della riproducibilità. Come spiegato in pr
 
 \section{Considerazioni finali}
 
+Abbiamo quindi visto come progettare e avviare un sistema per gestire un refettorio aziendale. Vediamo ora alcune considerazioni finali sul progetto:
+
+\begin{itemize}
+\item E' consigliabile effettuare molteplici test di carico del sistema, riproducendo l'entrata e l'uscita di molti utenti contemporaneamente, l'invio di ordini e prenotazioni simultaneamente e l'aggiunta di parecchi dispositivi operatore nella stessa ubicazione, misurando per simulazione le tempistiche di ogni componente all'interno dell'architettura. Questi "stress test" saranno specialmente utili per calibrare le delicate tempistiche dei lock che gestiscono le sezioni critiche.
+\item Budget permettendo, è raccomandabile l'utilizzo di dispositivi fisici con sistema operativo Android, al fine di poter usufruire dei google play services e degli aggiornamenti delle app tramite play store o MDM interno.
+\item Si sconsiglia vivamente l'utilizzo di sistemi operativi Windows per l'applicativo centrale, sia per le performance ridotte dei container rispetto ad un ambiente Linux, sia per i costi aggiuntivi delle licenze.
+\end{itemize}
+
 \chapter{Terminologie}\label{chap:terminologie}
 
 \begin{itemize}
 	\item \textbf{FAANG}: Facebook, Apple, Amazon, Netflix, Google
 	\item \textbf{AGID}: Agenzia per l'Italia Digitale
 	\item \textbf{ACID}: Atomicity, Consistency, Isolation, e Durability
+	\item \textbf{Go-routines}: Funzioni one-shot che vengono eseguite in thread "leggeri" grazie ai costi ridotti per la loro creazione rispetto ai thread tradizionali
+	\item \textbf{Channels}: Strumento che consente lo scambio di messaggi tra go-routine diverse senza la necessità di avere memoria condivisa
+	\item \textbf{MQTT}: Message Queuing Telemetry Transport, protocollo ISO che funziona su TCP/IP
+	\item \textbf{Kubernetes}: Sistema open source di orchestrazione e gestione di container distribuiti su macchine differenti
+	\item \textbf{JSON}: JavaScript Object Notation, formato per lo scambio dati basato sul linguaggio di programmazione JavaScript
+	\item \textbf{AWS}: Amazon Web Services, azienda leader nel settore cloud computing di proprietà di Amazon
+	\item \textbf{MDM}: Mobile Device Management, piattaforma che permette la gestione di tutti gli aspetti di un dispositivo remoto
+	\item \textbf{Pub/Sub}: Publisher/Subscriber, design pattern utilizzato per la comunicazione asincrona fra diversi processi, oggetti o agenti.
 \end{itemize}
 
 \chapter{Dedica}\label{chap:dedica}
