@@ -147,6 +147,7 @@ Analizzando i requisiti di ente e gestore possiamo stilare i seguenti punti:
 	\item E' necessario installare all'interno del refettorio un dispositivo hardware che consenta di effettuare ordini in loco
 	\item E' necessario installare all'interno del refettorio un dispositivo hardware che consenta di identificare gli utenti che entrano in mensa con già una prenotazione effettuata
 	\item E' necessario installare all'interno del refettorio due dispositivi hardware che consentano agli operatori della linea self di controllare l'avanzamento della coda virtuale degli utenti e di indicare quali utenti sono stati serviti al fine di registrare l'erogazione del pasto all'interno del sistema centrale
+	\item E' necessario fornire una connettività internet cablata o wireless a tutti i dispositivi hardware all'interno dell'ubicazione, con l'autorizzazione a contattare gli endpoint di rete del sistema centrale
 \end{itemize}
 
 \section{Analisi delle funzionalità}
@@ -395,7 +396,9 @@ Abbiamo quindi visto come progettare e avviare un sistema per gestire un refetto
 \begin{itemize}
 \item E' consigliabile effettuare molteplici test di carico del sistema, riproducendo l'entrata e l'uscita di molti utenti contemporaneamente, l'invio di ordini e prenotazioni simultaneamente e l'aggiunta di parecchi dispositivi operatore nella stessa ubicazione, misurando per simulazione le tempistiche di ogni componente all'interno dell'architettura. Questi "stress test" saranno specialmente utili per calibrare le delicate tempistiche dei lock che gestiscono le sezioni critiche.
 \item Budget permettendo, è raccomandabile l'utilizzo di dispositivi fisici con sistema operativo Android, al fine di poter usufruire dei google play services e degli aggiornamenti delle app tramite play store o MDM interno.
-\item Si sconsiglia vivamente l'utilizzo di sistemi operativi Windows per l'applicativo centrale, sia per le performance ridotte dei container rispetto ad un ambiente Linux, sia per i costi aggiuntivi delle licenze.
+\item Si sconsiglia vivamente l'utilizzo di sistemi operativi Windows per l'applicativo centrale, sia per le performance ridotte dei container rispetto ad un ambiente Linux, sia per i costi aggiuntivi di acquisto delle licenze.
+\item Per identificare degli utenti aziendali che effettuano l'accesso alla mensa, si suggerisce l'uso di rilevatori di badge magnetici o rilevatori ottici per la scansione di tesserini. Questo tipo di rilevatori è tendenzialmente molto veloce nella lettura, divenendo un candidato ideale per un ambiente ad alta concentrazione di utenti.
+
 \end{itemize}
 
 \chapter{Terminologie}\label{chap:terminologie}
